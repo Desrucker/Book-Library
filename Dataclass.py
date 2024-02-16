@@ -79,93 +79,75 @@ class BookShelf:
         # If no book with the given ID is found, return a message indicating the book was not found
         return (f"Book ID: {id} was not found.\n")
     
-    # Function to prompt the user to enter new information for a book and either create a new book or update an existing one
     def promptBookInfo(self, book=None):
         while True:
+            # Prompt the user to enter new information for the book
+            prompt = "Enter the new information for a new Book:" if book is None else f"Enter the new information for the Book: {book.title}"
+            print(prompt)
+            
+            # Validation and input for title
+            title = self.validate_input("Enter new title: ", "Title", lambda s: all(c.isalnum() or c in (" ", "'") for c in s))
+
+            # Validation and input for author
+            author = self.validate_input("Enter new author: ", "Author", lambda s: all(c.isalpha() or c in (" ", "'") for c in s))
+
+            # Validation and input for price
+            price = self.validate_float_input("Enter new price: ", "Price")
+
+            # Validation and input for copyright date
+            copyright_date = self.validate_date_input("Enter new published date (Month-Day-Year): ")
+
+            # Creating or updating book
+            if book is None:
+                isbn = self.generate_unique_isbn()
+                new_book = Books(len(self.Books_in_my_library) + 1, title, author, isbn, price, copyright_date)
+                self.Books_in_my_library.append(new_book)
+                self.existing_isbns.add(isbn)
+                return "Book created successfully."
+            else:
+                book.title = title
+                book.author = author
+                book.price = price
+                book.copyright_date = copyright_date
+                return f"Book with ID {book.id} has been updated.\n"
+
+    def validate_input(self, prompt, field_name, validation_func):
+        while True:
+            user_input = input(prompt)
+            if user_input and validation_func(user_input):
+                return user_input
+            print(f"{field_name} cannot be empty and must contain only valid characters.")
+
+    def validate_float_input(self, prompt, field_name):
+        while True:
             try:
-                # Prompt the user to enter new information for the book
-                if book is None:
-                    print("Enter the new information for a new Book:")
-                else:
-                    print(f"Enter the new information for the Book: {book.title}")
-                
-                # Validate and input the new title
-                while True:
-                    title = input("Enter new title: ")
-                    if title and all(c.isalnum() or c in (" ", "'") for c in title):
-                        break
-                    print("Title cannot be empty and must contain only alphanumeric characters, spaces, or apostrophes.")
+                price = float(input(prompt))
+                if price > 0:
+                    return price
+                print("Price must be positive.")
+            except ValueError:
+                print(f"Invalid {field_name} format. Please enter a valid {field_name.lower()}.")
 
-                # Validate and input the new author
-                while True:
-                    author = input("Enter new author: ")
-                    if author and not any(char.isdigit() for char in author):
-                        break
-                    print("Author cannot be empty and must not contain any numbers.")
-
-                # Validate and input the new price
-                while True:
-                    try:
-                        price = float(input("Enter new price: "))
-                        if price > 0:
-                            break
-                        print("Price must be positive.")
-                    except ValueError:
-                        print("Invalid price format. Please enter a valid price.")
-
-                # Validate and input the new copyright date
-                while True:
-                    copyright_date = input("Enter new published date (Month-Day-Year): ")
-                    if re.match(r'\d{2}-\d{2}-\d{4}', copyright_date):
-                        # Extract day, month, and year from the date string
-                        month, day, year = map(int, copyright_date.split('-'))
-
-                        # Check if the month is between 1 and 12
-                        if month < 1 or month > 12:
-                            print("Invalid month. Month should be between 01 and 12.")
-                            continue
-
-                        # Check if the day is between 1 and 31 (depending on the month)
-                        if day < 1 or (month in [1, 3, 5, 7, 8, 10, 12] and day > 31) or \
-                        (month in [4, 6, 9, 11] and day > 30) or \
-                        (month == 2 and ((year % 4 == 0 and year % 100 != 0) or year % 400 == 0) and day > 29) or \
-                        (month == 2 and ((year % 4 != 0) or (year % 100 == 0 and year % 400 != 0)) and day > 28):
-                            print("Invalid day. Day should be valid for the given month.")
-                            continue
-
-                        # Check if the year is between 1800 and 2025
-                        if year < 1800 or year > 2025:
-                            print("Invalid year. Year should be between 1800 and 2025.")
-                            continue
-
-                        # If all checks pass, break out of the loop
-                        break
+    def validate_date_input(self, prompt):
+        while True:
+            copyright_date = input(prompt)
+            if re.match(r'\d{2}-\d{2}-\d{4}', copyright_date):
+                month, day, year = map(int, copyright_date.split('-'))
+                if 1 <= month <= 12 and 1 <= day <= 31 and 1800 <= year <= 2025:
+                    if month in [4, 6, 9, 11] and day > 30:
+                        print("Invalid day for the given month.")
+                    elif month == 2:
+                        if (year % 4 == 0 and year % 100 != 0) or year % 400 == 0:
+                            if day > 29:
+                                print("Invalid day for the given month.")
+                        elif day > 28:
+                            print("Invalid day for the given month.")
                     else:
-                        print("Invalid date format. Use MM-DD-YYYY format.")
-
-                if book is None:
-                    # If the method is used for creating a new book
-                    # generate a unique ISBN and create a new book object
-                    isbn = self.generate_unique_isbn()
-                    new_book = Books(len(self.Books_in_my_library) + 1, title, author, isbn, price, copyright_date)
-                    self.Books_in_my_library.append(new_book)
-                    self.existing_isbns.add(isbn)
-
-                    # Return a success message
-                    return "Book created successfully."
+                        return copyright_date
                 else:
-                    # If the method is used for updating an existing book,
-                    # update the book's information and return a success message
-                    book.title = title
-                    book.author = author
-                    book.price = price
-                    book.copyright_date = copyright_date
-
-                    # Return a message indicating the successful update of the book
-                    return f"Book with ID {book.id} has been updated.\n"
-            except ValueError as error:
-                # If any validation fails, catch the error and continue the loop
-                print(f"Error creating/updating book: {error}\n")
+                    print("Invalid date range.")
+            else:
+                print("Invalid date format. Use MM-DD-YYYY format.")
 
     # Function to generate a unique ISBN for the new book
     def generate_unique_isbn(self):
