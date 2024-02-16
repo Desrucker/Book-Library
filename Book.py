@@ -10,4 +10,3 @@ class Books:
 
 	def __str__(self):
 		return f"Book ID: {self.id}, Title: {self.title}, Author: {self.author}, ISBN: {self.isbn}, Price: {self.price}, Copyright Date: {self.copyright_date}"
-
