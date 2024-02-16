@@ -79,6 +79,7 @@ class BookShelf:
         # If no book with the given ID is found, return a message indicating the book was not found
         return (f"Book ID: {id} was not found.\n")
     
+    # Function for interacting with the user to input information for a book.
     def promptBookInfo(self, book=None):
         while True:
             # Prompt the user to enter new information for the book
@@ -86,20 +87,20 @@ class BookShelf:
             print(prompt)
             
             # Validation and input for title
-            title = self.validate_input("Enter new title: ", "Title", lambda s: all(c.isalnum() or c in (" ", "'") for c in s))
+            title = self.validateInput("Enter new title: ", "Title", lambda s: all(c.isalnum() or c in (" ", "'") for c in s))
 
             # Validation and input for author
-            author = self.validate_input("Enter new author: ", "Author", lambda s: all(c.isalpha() or c in (" ", "'") for c in s))
+            author = self.validateInput("Enter new author: ", "Author", lambda s: all(c.isalpha() or c in (" ", "'") for c in s))
 
             # Validation and input for price
-            price = self.validate_float_input("Enter new price: ", "Price")
+            price = self.validateFloatInput("Enter new price: ", "Price")
 
             # Validation and input for copyright date
-            copyright_date = self.validate_date_input("Enter new published date (Month-Day-Year): ")
+            copyright_date = self.validateDateInput("Enter new published date (Month-Day-Year): ")
 
             # Creating or updating book
             if book is None:
-                isbn = self.generate_unique_isbn()
+                isbn = self.generateUniqueIsbn()
                 new_book = Books(len(self.Books_in_my_library) + 1, title, author, isbn, price, copyright_date)
                 self.Books_in_my_library.append(new_book)
                 self.existing_isbns.add(isbn)
@@ -111,14 +112,16 @@ class BookShelf:
                 book.copyright_date = copyright_date
                 return f"Book with ID {book.id} has been updated.\n"
 
-    def validate_input(self, prompt, field_name, validation_func):
+    # Function for validating user input for a specific field.
+    def validateInput(self, prompt, field_name, validation_func):
         while True:
             user_input = input(prompt)
             if user_input and validation_func(user_input):
                 return user_input
             print(f"{field_name} cannot be empty and must contain only valid characters.")
 
-    def validate_float_input(self, prompt, field_name):
+    # Function for validating user input for a floating-point field.
+    def validateFloatInput(self, prompt, field_name):
         while True:
             try:
                 price = float(input(prompt))
@@ -128,7 +131,8 @@ class BookShelf:
             except ValueError:
                 print(f"Invalid {field_name} format. Please enter a valid {field_name.lower()}.")
 
-    def validate_date_input(self, prompt):
+    # Function for validating user input for a date field.
+    def validateDateInput(self, prompt):
         while True:
             copyright_date = input(prompt)
             if re.match(r'\d{2}-\d{2}-\d{4}', copyright_date):
@@ -149,8 +153,9 @@ class BookShelf:
             else:
                 print("Invalid date format. Use MM-DD-YYYY format.")
 
+
     # Function to generate a unique ISBN for the new book
-    def generate_unique_isbn(self):
+    def generateUniqueIsbn(self):
         while True:
             isbn = str(978) + str(random.randint(1000000000, 9999999999))
             if isbn not in self.existing_isbns:
