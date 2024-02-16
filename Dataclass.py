@@ -96,7 +96,7 @@ class BookShelf:
             price = self.validateFloatInput("Enter new price: ", "Price")
 
             # Validation and input for copyright date
-            copyright_date = self.validateDateInput("Enter new published date (Month-Day-Year): ")
+            copyright_date = self.validateDateInput("Enter new published date (MM-DD-YYYY): ")
 
             # Creating or updating book
             if book is None:
