@@ -1,23 +1,30 @@
-The following Python code demonstrates a program for managing a bookshelf using a `BookShelf` data class.
+# Main.py
 
-### Importing Modules and Classes
-- **Import Statement:** Importing the necessary modules and classes from `Dataclass.py`, including the `BookShelf` class.
+## Overview
+This program manages a collection of books through various functionalities such as displaying, creating, removing, searching, and updating books.
 
-### Functions
-1. **`displayAllBooks(data_class)`:**
-   - Displays all books present in the bookshelf by calling the `getAllBooks()` method of the `data_class`.
+## Libraries Used
+- **colorama**: Used for colored text output.
+- **Dataclass.BookShelf**: Importing `BookShelf` class from `Dataclass` module for managing books.
 
-2. **`main()`:**
-   - Entry point of the program.
-   - Creates an instance of the `BookShelf` class.
-   - Displays a menu of options and handles user input in a loop until the user chooses to exit.
-     - Displays all books, creates a new book, removes a book, searches for books containing a string, updates information of a book, or exits the program based on user input.
+## Functions and Main Logic
 
-### Execution
-- The `main()` function is executed if the script is run directly.
+### `displayAllBooks(book_shelf)`
+- Displays all books in the bookshelf.
 
-### Usage
-- Users can interact with the bookshelf by choosing from various menu options, such as displaying all books, adding a new book, removing a book, searching for books, updating book information, or exiting the program.
+### `main()`
+- The main function to run the program.
+- Initializes a `BookShelf` object.
+- Enters a loop to continuously prompt the user for input and execute corresponding actions based on menu options.
+- Menu options are presented in cyan color.
+- Handles various cases for different menu options:
+  - Case 1: Display all books
+  - Case 2: Create a new book
+  - Case 3: Remove a book
+  - Case 4: Display books containing a specific string
+  - Case 5: Update book information
+  - Case 6: Exit the program
+- Handles invalid input gracefully.
 
-### Note
-- Error handling is implemented to handle invalid user inputs, such as non-numeric input or invalid menu choices.
+## Running the Program
+The program starts executing from the `main()` function. Run the script and follow the prompts to perform book management tasks.

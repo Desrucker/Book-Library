@@ -1,142 +1,108 @@
-# Importing the necessary module and classes
-from Book import Books
+from Book import Books  # Importing the Books class from the Book module
 import random
 import re
 
-# Define a class representing a bookshelf
 class BookShelf:
-    # Initialize the bookshelf with predefined books
     def __init__(self):
-        # Define some initial books for the bookshelf
-        book1 = Books(1, "Where's Molly", "H D Carlton", 9780316069359, 16.99, "02-16-2024")
-        book2 = Books(2, "Powerless", "Lauren Roberts", 9780061122415, 17.99, "11-07-2023")
-        book3 = Books(3, "The Great Gatsby", "F. Scott Fitzgerald", 9780140444254, 11.47, "04-10-1925")
-        book4 = Books(4, "The Hobbit", "J.R.R. Tolkien", 9780765432105, 10.99, "09-21-1937")
-        book5 = Books(5, "The Hunger Games", "Suzanne Collins", 9781234567890, 11.47, "12-24-2013")
-
-        # Store the initial books in a list
-        self.Books_in_my_library = [book1, book2, book3, book4, book5]
-
-        # Store existing ISBNs in a set for quick lookup
+        # Initialize file name, list of books, and load existing books
+        self.filename = "books.txt"
+        self.Books_in_my_library = []
+        self.loadBooks()
+        # Create a set of existing ISBNs for validation
         self.existing_isbns = {book.isbn for book in self.Books_in_my_library}
 
-    # Function to get all books from the bookshelf
-        # Option 1
-    def getAllBooks(self):
+    def loadBooks(self): # Load books from the text file
+        self.Books_in_my_library = []
+        with open(self.filename, "r") as file:
+            for line in file:
+                # Split the line and create Book objects
+                id, title, author, isbn, price, copyright_date = map(str.strip, line.strip().split(","))
+                book = Books(int(id), title, author, isbn, float(price), copyright_date)
+                self.Books_in_my_library.append(book)
+
+    def saveBooks(self): # Save books to the text file
+        with open(self.filename, "w") as file:
+            for book in self.Books_in_my_library:
+                file.write(f"{book.id},{book.title},{book.author},{book.isbn},{book.price},{book.copyright_date}\n")
+
+    def getAllBooks(self): # Return all books in the library
+        self.loadBooks()
         return self.Books_in_my_library
     
-    # Function to create a new book and add it to the bookshelf
-        # Option 2
-    def createBook(self):
-        while True:
-            try:
-                # Call the function to prompt the user for new book information
-                message = self.promptBookInfo()
-                # Return the message indicating the result of the creation
-                return message
-            except ValueError as error:
-                # If any validation fails, print the error message and continue the loop
-                print(f"Error creating book: {error}\n")
-
-    # Function to remove a book from the bookshelf based on its ID
-        # Option 3
-    def removeBook(self, id):
-        for book in self.Books_in_my_library:
-            if book.id == id:
-                # If the book with the given ID is found, remove it from the bookshelf
+    def removeBook(self): # Remove a book by its ID
+        id_to_remove = int(input("What book would you like to remove (Enter ID): "))
+        for book in self.Books_in_my_library[:]:
+            if book.id == id_to_remove:
                 self.Books_in_my_library.remove(book)
-                # Return a message indicating the deletion of the book
-                return (f"You deleted {book}")
-        # If no book with the given ID is found, return None
+                self.saveBooks()
+                return f"You deleted {book}"
         return None
-            
-    # Function to search for books based on a string
-        # Option 4
-    def searchBooks(self, string):
+
+    def searchBooks(self, string): # Search books by title, author, or copyright date
         found_books = []
         for book in self.Books_in_my_library:
             if (string.lower() in book.title.lower()) or (string.lower() in book.author.lower()) or (string in book.copyright_date):
                 found_books.append(book)
         return found_books
     
-    # Function to update a book by its ID
-        # Option 5
-    def updateBookById(self, id):
-        # Find the book with the given ID
+    def updateBookById(self): # Update book information by its ID
+        id = int(input("What book would you like to update (Enter ID): "))
         for book in self.Books_in_my_library:
             if book.id == id:
-                # If the book is found, proceed with updating its information
                 while True:
-                    try:
-                        # Call the function to prompt the user to update exisiting book
-                        message = self.promptBookInfo(book)
-                        # Return the message indicating the result of the update
-                        return message
-                    except ValueError as error:
-                        # If any validation fails, catch the error and continue the loop
-                        print(f"Error updating book: {error}\n")
-
-        # If no book with the given ID is found, return a message indicating the book was not found
+                    updated_book_info = self.promptBookInfo(book)
+                    book.title, book.author, book.price, book.copyright_date = updated_book_info
+                    self.saveBooks()
+                    return "Book updated successfully."
         return (f"Book ID: {id} was not found.\n")
-    
-    # Function for interacting with the user to input information for a book.
-    def promptBookInfo(self, book=None):
+
+    def createBook(self): # Create a new book
         while True:
-            # Prompt the user to enter new information for the book
+            book_info = self.promptBookInfo()
+            if book_info:
+                id = len(self.Books_in_my_library) + 1
+                title, author, price, copyright_date = book_info
+                # Generate a unique ISBN and create a new book object
+                new_book = Books(id, title, author, self.generateUniqueIsbn(), price, copyright_date)
+                self.Books_in_my_library.append(new_book)
+                self.saveBooks()
+                return "Book created successfully."
+
+    def promptBookInfo(self, book=None): # Prompt for book information
+        while True:
             prompt = "Enter the new information for a new Book:" if book is None else f"Enter the new information for the Book: {book.title}"
             print(prompt)
-            
-            # Validation and input for title
             title = self.validateInput("Enter new title: ", "Title", lambda s: all(c.isalnum() or c in (" ", "'") for c in s))
-
-            # Validation and input for author
             author = self.validateInput("Enter new author: ", "Author", lambda s: all(c.isalpha() or c in (" ", "'") for c in s))
+            price = self.validateFloatInput("Enter new price: ", "Price", lambda s: float(s) > 0)
+            copyright_date = self.validateDateInput("Enter new published date (MM-DD-YYYY): ", lambda s: re.match(r'\d{2}-\d{2}-\d{4}', s))
+            
+            if title and author and price and copyright_date:
+                return (title, author, price, copyright_date)
 
-            # Validation and input for price
-            price = self.validateFloatInput("Enter new price: ", "Price")
-
-            # Validation and input for copyright date
-            copyright_date = self.validateDateInput("Enter new published date (MM-DD-YYYY): ")
-
-            # Creating or updating book
-            if book is None:
-                isbn = self.generateUniqueIsbn()
-                new_book = Books(len(self.Books_in_my_library) + 1, title, author, isbn, price, copyright_date)
-                self.Books_in_my_library.append(new_book)
-                self.existing_isbns.add(isbn)
-                return "Book created successfully."
-            else:
-                book.title = title
-                book.author = author
-                book.price = price
-                book.copyright_date = copyright_date
-                return f"Book with ID {book.id} has been updated.\n"
-
-    # Function for validating user input for a specific field.
-    def validateInput(self, prompt, field_name, validation_func):
+    def validateInput(self, prompt, field_name, validation_func): # Validate user input
         while True:
             user_input = input(prompt)
             if user_input and validation_func(user_input):
                 return user_input
             print(f"{field_name} cannot be empty and must contain only valid characters.")
 
-    # Function for validating user input for a floating-point field.
-    def validateFloatInput(self, prompt, field_name):
+    def validateFloatInput(self, prompt, field_name, validation_func): # Validate float input
         while True:
+            user_input = input(prompt)
             try:
-                price = float(input(prompt))
-                if price > 0:
-                    return price
-                print("Price must be positive.")
+                if validation_func(user_input):
+                    return float(user_input)
+                else:
+                    print("Price must be positive.")
             except ValueError:
                 print(f"Invalid {field_name} format. Please enter a valid {field_name.lower()}.")
 
-    # Function for validating user input for a date field.
-    def validateDateInput(self, prompt):
+    def validateDateInput(self, prompt, validation_func): # Validate date input
         while True:
-            copyright_date = input(prompt)
-            if re.match(r'\d{2}-\d{2}-\d{4}', copyright_date):
-                month, day, year = map(int, copyright_date.split('-'))
+            user_input = input(prompt)
+            if validation_func(user_input):
+                month, day, year = map(int, user_input.split('-'))
                 if 1 <= month <= 12 and 1 <= day <= 31 and 1800 <= year <= 2025:
                     if month in [4, 6, 9, 11] and day > 30:
                         print("Invalid day for the given month.")
@@ -147,22 +113,19 @@ class BookShelf:
                         elif day > 28:
                             print("Invalid day for the given month.")
                     else:
-                        return copyright_date
+                        return user_input
                 else:
                     print("Invalid date range.")
             else:
                 print("Invalid date format. Use MM-DD-YYYY format.")
 
-
-    # Function to generate a unique ISBN for the new book
-    def generateUniqueIsbn(self):
+    def generateUniqueIsbn(self): # Generate a unique ISBN
         while True:
             isbn = str(978) + str(random.randint(1000000000, 9999999999))
             if isbn not in self.existing_isbns:
                 return isbn
 
-    # Function to display the menu options
-    def menu(self):
+    def menu(self): # Print menu options
         print("1 Show all the books")
         print("2 Create a book")
         print("3 Remove a book")
