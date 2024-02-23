@@ -36,5 +36,5 @@ The program offers the following functionalities:
 
 ## Dependencies
 - Python 3.10+
-- `colorama` library
 - `random` library
+- `colorama` library
