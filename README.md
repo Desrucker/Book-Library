@@ -37,4 +37,3 @@ The program offers the following functionalities:
 ## Dependencies
 - Python 3.x
 - `colorama` library
-

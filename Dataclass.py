@@ -73,7 +73,7 @@ class BookShelf:
             prompt = "Enter the new information for a new Book:" if book is None else f"Enter the new information for the Book: {book.title}"
             print(prompt)
             title = self.validateInput("Enter new title: ", "Title", lambda s: all(c.isalnum() or c in (" ", "'") for c in s))
-            author = self.validateInput("Enter new author: ", "Author", lambda s: all(c.isalpha() or c in (" ", "'") for c in s))
+            author = self.validateInput("Enter new author: ", "Author", lambda s: all(c.isalpha() or c in (" ", "'", ".") for c in s))
             price = self.validateFloatInput("Enter new price: ", "Price", lambda s: float(s) > 0)
             copyright_date = self.validateDateInput("Enter new published date (MM-DD-YYYY): ", lambda s: re.match(r'\d{2}-\d{2}-\d{4}', s))
             
