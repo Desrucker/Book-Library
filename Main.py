@@ -41,7 +41,7 @@ def main():
                 case 4: # Case 4: Display books containing a string
                     search_string = input("Enter string to search: ")
                     found_books = book_shelf.searchBooks(search_string)
-                    [print(book) for book in found_books] or print("No matching books found\n")
+                    [print(book) for book in found_books] or print("No matching books found")
 
                 case 5: # Case 5: Update information 
                     print("You have selected to update book information.\n")
