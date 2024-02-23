@@ -54,7 +54,7 @@ class BookShelf:
                     book.title, book.author, book.price, book.copyright_date = updated_book_info
                     self.saveBooks()
                     return "Book updated successfully."
-        return (f"Book ID: {id} was not found.\n")
+        return (f"Book ID: {id} was not found.")
 
     def createBook(self): # Create a new book
         while True:

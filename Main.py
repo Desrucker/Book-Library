@@ -36,7 +36,7 @@ def main():
                     print("You have selected to remove a book.\n")
                     displayAllBooks(book_shelf)
                     result = book_shelf.removeBook()
-                    print(f"{result}\n") if result else print(f"Book with the specified ID was not found.\n")
+                    print(f"{result}") if result else print(f"Book with the specified ID was not found.")
 
                 case 4: # Case 4: Display books containing a string
                     search_string = input("Enter string to search: ")
@@ -47,16 +47,16 @@ def main():
                     print("You have selected to update book information.\n")
                     displayAllBooks(book_shelf)
                     message = book_shelf.updateBookById()
-                    print(f"{message}\n")
+                    print(f"{message}")
 
                 case 6: # Case 6: Exit the program
                     print("Exiting Program")
                     break
                 
                 case _: # Handle invalid input
-                    print("Invalid number. Please enter a valid option.\n")
+                    print("Invalid number. Please enter a valid option.")
         except ValueError:
-            print("Invalid input. Please enter a number.\n")
+            print("\nInvalid input. Please enter a number.")
 
 if __name__ == '__main__':
     main()
