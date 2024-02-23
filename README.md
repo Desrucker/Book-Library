@@ -35,5 +35,5 @@ The program offers the following functionalities:
 3. Interact with the program until you are finished, and exit by choosing the appropriate option from the menu.
 
 ## Dependencies
-- Python 3.x
+- Python 3.10+
 - `colorama` library
