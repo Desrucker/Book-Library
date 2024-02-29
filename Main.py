@@ -92,7 +92,6 @@ def main():
                     message = book_shelf.updateBookById(id_to_update, updated_book_info)
                     print(f"{message}\n")
 
-
                 # Case 6: Exit the program
                 case 6:
                     print("Exiting Program")

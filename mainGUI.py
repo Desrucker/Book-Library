@@ -51,9 +51,9 @@ class MainGUI:
 
     def showBooks(self, books):
         # Update the book table with new values
-        self.window['BOOK_TABLE'].update(values=self.make_rows(books))
+        self.window['BOOK_TABLE'].update(values=self.makeRows(books))
 
-    def make_rows(self, books):
+    def makeRows(self, books):
         # Create rows for the book table
         return [[book.id, book.title, book.author, book.isbn, f"{book.price:.2f}", book.copyright_date] for book in books]
 
