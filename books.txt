@@ -2,4 +2,4 @@
 2,Powerless,Lauren Roberts,9780061122415,17.99,11-07-2023
 3,The Great Gatsby,F. Scott Fitzgerald,9780140444254,11.47,04-10-1925
 4,The Hobbit,J.R.R. Tolkien,9780765432105,10.99,09-21-1937
-5,The Hunger Games,Suzanne Collins,9781234567890,11.47,12-24-2013
+5,The Hunger Games,Suzanne Collins,9781234567890,18.00,12-24-2013

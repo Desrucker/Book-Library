@@ -1,62 +1,109 @@
-import colorama  # Import colorama library for colored text
-from Dataclass import BookShelf  # Import BookShelf class from Dataclass module
+# Import necessary modules and classes
+from Dataclass import BookShelf
 
+# Function to display all books in the bookshelf
 def displayAllBooks(book_shelf):
-    """Display all books in the bookshelf."""
+    # Get all books from the bookshelf
     books = book_shelf.getAllBooks()
+    # Print information for each book
     for book in books:
         print(book)
+    print()
+    
+def menu():
+    print("1 Show all the books")
+    print("2 Create a book")
+    print("3 Remove a book")
+    print("4 Find book(s) by string")
+    print("5 Update a book")
+    print("6 to quit")
 
+# Main function to interact with the bookshelf
 def main():
-    """Main function to run the program."""
-    # Initialize BookShelf object
+    # Create an instance of the BookShelf class
     book_shelf = BookShelf()
 
+    # Loop to display menu options and handle user input
     while True:
-        # Print menu options in cyan color
-        print(colorama.Fore.CYAN)
-        book_shelf.menu()
-        print(colorama.Style.RESET_ALL)
+        # Display the menu
+        menu()
+
+        # Prompt the user to enter a number corresponding to their choice
         try:
-            # Get user input for menu option
-            response = int(input("Enter a number: "))
+            response = int(input("\nEnter a number: "))
             print()
             
-            # Use match statement for handling menu options
+            # Use a match statement to execute different actions based on user input
             match response: 
-                case 1: # Case 1: Display all books
+                # Case 1: Display all books
+                case 1:
                     displayAllBooks(book_shelf)
 
-                case 2: # Case 2: Create a new book
-                    print("You have selected to create a new book.\n")
-                    message = book_shelf.createBook()
-                    print(message)
+                # Case 2: Create a new book
+                case 2:
+                    # Prompt the user to enter book information
+                    title = input("Enter title: ")
+                    author = input("Enter author: ")
+                    price = float(input("Enter price: "))
+                    copyright_date = input("Enter copyright date (MM-DD-YYYY): ")
+                    book_info = (title, author, price, copyright_date)
+                    # Call the createBook method to add the new book to the bookshelf
+                    message = book_shelf.createBook(book_info)
+                    print(f"{message}\n")
 
-                case 3: # Case 3: Remove a book
-                    print("You have selected to remove a book.\n")
+                # Case 3: Remove a book
+                case 3:
+                    # Display all books in the bookshelf
                     displayAllBooks(book_shelf)
-                    result = book_shelf.removeBook()
-                    print(f"{result}") if result else print(f"Book with the specified ID was not found.")
+                    # Prompt the user to enter the ID of the book they want to remove
+                    id = int(input("What book would you like to remove (Enter ID): "))
+                    # Call the removeBook method to remove the specified book
+                    result = book_shelf.removeBook(id)
+                    # Print the result of the removal operation
+                    if result is not None:
+                        print(f"{result}\n")
+                    else:
+                        print(f"Book ID: {id} was not found.\n")
 
-                case 4: # Case 4: Display books containing a string
+                # Case 4: Display books containing a string
+                case 4:
                     search_string = input("Enter string to search: ")
                     found_books = book_shelf.searchBooks(search_string)
-                    [print(book) for book in found_books] or print("No matching books found")
+                    if found_books:
+                        for book in found_books:
+                            print(book)
+                        print()
+                    else:
+                        print("No matching books found\n")
 
-                case 5: # Case 5: Update information 
-                    print("You have selected to update book information.\n")
+                # Case 5: Update information of a book
+                case 5:
+                    # Display all books in the bookshelf
                     displayAllBooks(book_shelf)
-                    message = book_shelf.updateBookById()
-                    print(f"{message}")
+                    # Prompt the user to enter the ID of the book they want to update
+                    id_to_update = int(input("What book would you like to update (Enter ID): "))
+                    # Prompt the user to enter the updated information for the book
+                    title = input("Enter updated title: ")
+                    author = input("Enter updated author: ")
+                    price = float(input("Enter updated price: "))
+                    copyright_date = input("Enter updated copyright date (MM-DD-YYYY): ")
+                    updated_book_info = (title, author, price, copyright_date)
+                    # Call the updateBookById method to update the information of the specified book
+                    message = book_shelf.updateBookById(id_to_update, updated_book_info)
+                    print(f"{message}\n")
 
-                case 6: # Case 6: Exit the program
+
+                # Case 6: Exit the program
+                case 6:
                     print("Exiting Program")
                     break
                 
-                case _: # Handle invalid input
-                    print("Invalid number. Please enter a valid option.")
+                # Default case: Selected option is not within options
+                case _:
+                    print("Invalid number. Please enter a valid option.\n")
         except ValueError:
-            print("\nInvalid input. Please enter a number.")
+            print("Invalid input. Please enter a number.\n")
 
+# Entry point of the program
 if __name__ == '__main__':
     main()
