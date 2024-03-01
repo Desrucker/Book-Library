@@ -105,7 +105,9 @@ class MainGUI:
                         myGUI.popup('\n'.join(validation_result), title='Error')
                     else:
                         success = self.book_shelf.createBook(book_info)
-                        if not success:
+                        if success:
+                            myGUI.popup("Book created successfully.")
+                        else:
                             myGUI.popup_error("Failed to create the book.")
                 self.showBooks(self.book_shelf.getAllBooks())
                 break
