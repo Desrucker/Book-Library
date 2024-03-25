@@ -1,0 +1,148 @@
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Set default font family */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+/* Table styles */
+/* Styles for tables */
+table {
+    border-collapse: collapse; /* Collapse table borders */
+    width: 100%; /* Make table fill its container */
+}
+
+/* Styles for table headers and data cells */
+th, td {
+    border: 1px solid #ddd; /* Set border for table cells */
+    padding: 10px; /* Add padding to table cells */
+}
+
+/* Alternate row background color */
+/* Apply background color to even rows */
+tr:nth-child(even) {
+    background-color: #f5f5f5;
+}
+
+/* Hover effect */
+/* Apply hover effect to table rows */
+tr:hover {
+    background-color: #e0e0e0;
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+/* Form styles */
+/* Styles for forms */
+form {
+    display: flex; /* Use flexbox */
+    flex-direction: column; /* Stack form elements vertically */
+    align-items: center; /* Center-align form elements */
+    margin: 20px; /* Add margin */
+    padding: 20px; /* Add padding */
+    border: 1px solid #ddd; /* Set border */
+    border-radius: 8px; /* Add border radius */
+    background-color: #f9f9f9; /* Set background color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow */
+    width: 50%; /* Set width */
+    margin: 0 auto; /* Center the form horizontally */
+}
+
+/* Button styles */
+/* Styles for buttons */
+.btn {
+    border: none; /* Remove button border */
+    border-radius: 4px; /* Add border radius */
+    padding: 5px 15px; /* Add padding */
+    text-decoration: none; /* Remove text decoration */
+    color: white; /* Set text color */
+    background-color: #4CAF50; /* Set background color */
+    transition: background-color 0.3s ease; /* Add transition effect */
+}
+
+/* Button hover styles */
+.btn:hover {
+    background-color: #45a049; /* Change background color on hover */
+}
+
+/* Delete button styles */
+/* Styles for delete buttons */
+.btn-danger {
+    background-color: #f44336; /* Set background color */
+    padding: 5px 12px; /* Adjust padding */
+}
+
+/* Delete button hover styles */
+.btn-danger:hover {
+    background-color: #da190b; /* Change background color on hover */
+}
+
+/* Edit button styles */
+/* Styles for edit buttons */
+.btn-info {
+    background-color: #2196F3; /* Set background color */
+    padding: 5px 12px; /* Adjust padding */
+}
+
+/* Edit button hover styles */
+.btn-info:hover {
+    background-color: #0b7dda; /* Change background color on hover */
+}
+
+/* Form group margin */
+/* Add margin bottom to form groups */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Input field styles */
+/* Styles for input fields */
+.input-field {
+    width: 100%; /* Set input field width */
+    padding: 10px; /* Add padding */
+    margin: 5px 0; /* Add margin */
+    border: 1px solid #ccc; /* Set border */
+    border-radius: 4px; /* Add border radius */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+/* Input field focus styles */
+/* Styles for focused input fields */
+.input-field:focus {
+    border-color: #2196F3; /* Set border color */
+    outline: none; /* Remove outline */
+}
+
+/* Heading styles */
+/* Styles for headings */
+h1 {
+    text-align: center; /* Center-align headings */
+}
+
+/* Button group styles */
+/* Styles for button groups */
+.btn-group {
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center-align buttons */
+}
+
+/* Label styles */
+/* Styles for labels */
+label {
+    font-weight: bold; /* Set font weight to bold */
+}
+
+/* Paragraph styles */
+/* Styles for paragraphs */
+p {
+    margin: 5px 0; /* Add margin */
+}
+
+/* Button hover effect */
+/* Apply brightness filter on button hover */
+.confirm-btn, .cancel-btn:hover {
+    filter: brightness(0.9);
+}
+
+/* Added margin for buttons */
+/* Add margin between buttons */
+.cancel-btn {
+    margin-left: 10px;
+}

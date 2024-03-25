@@ -1,0 +1,71 @@
+body {
+    font-family: Arial, sans-serif; /* Set the font family */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    background-color: #f2f2f2; /* Set background color */
+}
+
+/* Styles for the heading */
+h1 {
+    text-align: center; /* Center-align the heading */
+    margin-top: 50px; /* Add margin from the top */
+}
+
+/* Styles for the form */
+form {
+    width: 50%; /* Set form width */
+    margin: 0 auto; /* Center the form horizontally */
+    background-color: #fff; /* Set background color */
+    padding: 20px; /* Add padding */
+    border-radius: 5px; /* Add border radius */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow */
+}
+
+/* Styles for form groups */
+.form-group {
+    margin-bottom: 20px; /* Add margin bottom */
+}
+
+/* Styles for labels */
+label {
+    font-weight: bold; /* Set font weight to bold */
+}
+
+/* Styles for information */
+.info {
+    margin-top: 5px; /* Add margin top */
+}
+
+/* Styles for button group */
+.btn-group {
+    text-align: center; /* Center-align the buttons */
+}
+
+/* Styles for confirm and cancel buttons */
+.confirm-btn,
+.cancel-btn {
+    padding: 10px 20px; /* Add padding */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Add border radius */
+    cursor: pointer; /* Set cursor to pointer */
+    transition: background-color 0.3s ease; /* Add transition effect */
+}
+
+/* Styles for confirm button */
+.confirm-btn {
+    background-color: #76ec93; /* Set background color */
+    color: #fff; /* Set text color */
+}
+
+/* Styles for cancel button */
+.cancel-btn {
+    background-color: #ff4d4d; /* Set background color */
+    color: #000; /* Set text color */
+    margin-left: 10px; /* Add margin left */
+}
+
+/* Hover styles for buttons */
+.confirm-btn:hover,
+.cancel-btn:hover {
+    background-color: #61a3ee; /* Change background color on hover */
+}

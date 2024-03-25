@@ -1,6 +1,5 @@
-import random
 import re
-from Book import Book  # Importing the Book class from the Book module
+from Book import Book  # Assuming Book class is defined in Book.py
 
 class BookShelf:
     def __init__(self):
@@ -11,7 +10,8 @@ class BookShelf:
         # Create a set of existing ISBNs for validation
         self.existing_isbns = {book.isbn for book in self.Books_in_my_library}
 
-    def loadBooks(self): # Load books from the text file
+    def loadBooks(self):
+        # Load books from the text file
         self.Books_in_my_library = []
         with open(self.filename, "r") as file:
             for line in file:
@@ -20,16 +20,19 @@ class BookShelf:
                 book = Book(int(id), title, author, isbn, float(price), copyright_date)
                 self.Books_in_my_library.append(book)
 
-    def saveBooks(self): # Save books to the text file
+    def saveBooks(self):
+        # Save books to the text file
         with open(self.filename, "w") as file:
             for book in self.Books_in_my_library:
-                file.write(f"{book.id},{book.title},{book.author},{book.isbn},{float(book.price):.2f},{book.copyright_date}\n")
+                file.write(f"{book.id},{book.title},{book.author},{book.isbn},{book.price},{book.copyright_date}\n")
 
-    def getAllBooks(self): # Return all books in the library
+    def getAllBooks(self):
+        # Return all books in the library
         self.loadBooks()
         return self.Books_in_my_library
     
-    def removeBook(self, id_to_remove): # Remove a book by its ID
+    def removeBook(self, id_to_remove):
+        # Remove a book by its ID
         for book in self.Books_in_my_library[:]:
             if book.id == id_to_remove:
                 self.Books_in_my_library.remove(book)
@@ -37,58 +40,74 @@ class BookShelf:
                 return f"You deleted {book}"
         return None
 
-    def searchBooks(self, string): # Search books by title, author, or copyright date
+    def searchBooks(self, string):
+        # Search books by title, author, isbn, price, or copyright date
         found_books = []
         for book in self.Books_in_my_library:
-            if (string.lower() in book.title.lower()) or (string.lower() in book.author.lower()) or (string in book.copyright_date):
+            if (string.lower() in book.title.lower()) \
+                or (string.lower() in book.author.lower()) \
+                or (isinstance(book.copyright_date, str) and string in book.copyright_date) \
+                or (isinstance(book.isbn, str) and string in book.isbn):
                 found_books.append(book)
         return found_books
+
     
     def findBook(self, id):
-        # load all things first
-        self.loadBooks()
-
-        # find the matching thing using the id number by iterating through the list. when found, return it
+        # Find a book by its ID
+        self.loadBooks() # Ensure books are loaded
         for book in self.Books_in_my_library:
             if book.id == id:
                 return book
         return None
     
-    def updateBookById(self, id, book_info): # Update book information by its ID
-        errors = self.validateBookInfo(*book_info)
+    def updateBook(self, id, title, author, isbn, price, copyright_date):
+        # Update book information by its ID
+        errors = self.validateBookInfo(title, author, isbn, price, copyright_date)
         if errors:
             return errors
 
-        for book in self.Books_in_my_library:
-            if book.id == id:
-                book.title, book.author, book.price, book.copyright_date = book_info
+        for stored_book in self.Books_in_my_library:
+            if stored_book.id == id:
+                # Adjusting the order of parameters
+                stored_book.title = title
+                stored_book.author = author
+                stored_book.isbn = isbn
+                stored_book.price = price
+                stored_book.copyright_date = copyright_date
                 self.saveBooks()
                 return "Book updated successfully."
-        return (f"Book ID: {id} was not found.")
+        return f"Book ID: {id} was not found."
 
-    def createBook(self, book_info): # Create a new book
+    def createBook(self, title, author, isbn, price, copyright_date):
+        # Create a new book
+        errors = self.validateBookInfo(title, author, isbn, price, copyright_date)
+        if errors:
+            return errors
+
+        # Check if ISBN already exists
+        if isbn in self.existing_isbns:
+            return "A book with the same ISBN already exists in the library."
+
         id = len(self.Books_in_my_library) + 1
-        title, author, price, copyright_date = book_info
-        
-        # Validate book information
-        validation_result = self.validateBookInfo(title, author, price, copyright_date)
-        if isinstance(validation_result, list):
-            # If validation errors exist, return the list of errors
-            return validation_result
         
         # If validation successful, create a new book
-        new_book = Book(id, title, author, self.generateUniqueIsbn(), price, copyright_date)
+        new_book = Book(id, title, author, isbn, price, copyright_date)
         self.Books_in_my_library.append(new_book)
+        self.existing_isbns.add(isbn) 
         self.saveBooks()
         return "Book created successfully."
 
-    def validateBookInfo(self, title, author, price, copyright_date):
+
+    def validateBookInfo(self, title, author, isbn, price, copyright_date):
+        # Validate book information
         errors = []
 
         if not isinstance(title, str) or not title.strip():
             errors.append("Invalid title. Please enter a valid title.")
         if not isinstance(author, str) or not author.strip():
             errors.append("Invalid author. Please enter a valid author.")
+        if not isbn or not re.match(r'^\d{13}$', isbn):
+            errors.append("Invalid ISBN. Please enter a valid 13-digit ISBN.")
         try:
             price = float(price)
             if price <= 0:
@@ -112,12 +131,4 @@ class BookShelf:
                 elif day > 28:
                     errors.append("Invalid day for the given month.")
 
-        return errors if errors else "Validation successful."
-
-    def generateUniqueIsbn(self): # Generate a unique ISBN
-        while True:
-            isbn = str(978) + str(random.randint(1000000000, 9999999999))
-            if isbn not in self.existing_isbns:
-                return isbn
-
-
+        return errors if errors else None
