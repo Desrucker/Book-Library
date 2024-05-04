@@ -13,11 +13,11 @@ The program offers the following key functionalities:
 
 ## Components
 
-### `main.py`
+### `MainWeb.py`
 - **Description**: This script serves as the main entry point for the program, implementing the web interface.
 - **Functionality**: It handles HTTP requests, presents web pages, and executes corresponding functions based on user interactions.
 
-### `BookShelf.py`
+### `WebClass.py`
 - **Description**: The `BookShelf` class defined in this module manages the library's collection of books.
 - **Functionality**: It provides methods for loading, saving, adding, removing, updating, and searching for books in the library.
 
