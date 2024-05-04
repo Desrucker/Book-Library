@@ -29,11 +29,6 @@ The program offers the following key functionalities:
 - **Description**: These libraries enhance the program's functionality by enabling colored text output and regular expression matching, respectively.
 - **Functionality**: `colorama` adds visual appeal to the interface, while `re` aids in validating date formats.
 
-## Usage
-1. Run the `main.py` script using Python 3.10 or above.
-2. Open your web browser and navigate to the provided URL (usually `http://localhost:5000`).
-3. Use the web interface to perform various tasks like adding, updating, or removing books.
-
 ## Dependencies
 - Python 3.10+
 - `colorama` library
