@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from werkzeug.exceptions import BadRequestKeyError
-from Webclass import BookShelf
+from WebClass import BookShelf
 
 app = Flask(__name__)
 data_source = BookShelf()
